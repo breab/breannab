@@ -1,0 +1,39 @@
+name: Deploy staging site
+
+on:
+  push:
+    branches:
+      - staging
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging repository
+        env:
+          TOKEN: ${{ secrets.STAGING_DEPLOY_TOKEN }}
+        run: |
+          git clone https://x-access-token:${TOKEN}@github.com/breab/breannab-staging.git staging-repo
+
+          rm -rf staging-repo/* staging-repo/.[!.]* staging-repo/..?* 2>/dev/null || true
+
+          cp -R . staging-repo/
+
+          cd staging-repo
+          rm -rf .git
+
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy staging site"
+          git branch -M main
+          git remote add origin https://x-access-token:${TOKEN}@github.com/breab/breannab-staging.git
+          git push --force origin main
