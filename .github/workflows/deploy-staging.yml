@@ -20,13 +20,15 @@ jobs:
         env:
           TOKEN: ${{ secrets.STAGING_DEPLOY_TOKEN }}
         run: |
-          git clone https://x-access-token:${TOKEN}@github.com/breab/breannab-staging.git staging-repo
+          mkdir ../staging-repo
 
-          rm -rf staging-repo/* staging-repo/.[!.]* staging-repo/..?* 2>/dev/null || true
+          git clone https://x-access-token:${TOKEN}@github.com/breab/breannab-staging.git ../staging-repo
 
-          cp -R . staging-repo/
+          rm -rf ../staging-repo/* ../staging-repo/.[!.]* ../staging-repo/..?* 2>/dev/null || true
 
-          cd staging-repo
+          cp -R . ../staging-repo/
+
+          cd ../staging-repo
           rm -rf .git
 
           git init
