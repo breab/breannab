@@ -29,6 +29,9 @@ jobs:
           rsync -av --exclude='.git' --exclude='.github' ./ ../staging-repo/
 
           cd ../staging-repo
+          
+          echo "staging.breannab.com" > CNAME
+          
           rm -rf .git
 
           git init
