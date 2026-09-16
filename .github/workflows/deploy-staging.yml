@@ -26,7 +26,7 @@ jobs:
 
           rm -rf ../staging-repo/* ../staging-repo/.[!.]* ../staging-repo/..?* 2>/dev/null || true
 
-          cp -R . ../staging-repo/
+          rsync -av --exclude='.git' --exclude='.github' ./ ../staging-repo/
 
           cd ../staging-repo
           rm -rf .git
